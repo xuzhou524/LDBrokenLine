@@ -1,2 +1,1 @@
-# LDChart
 # LDBrokenLine
