@@ -43,7 +43,9 @@
         if (i==5) {
             label1.text = @"0";
         }else if (i > 5){
-            label1.text = [NSString stringWithFormat:@"%.2f",max/5 * (i -5)];
+            label1.text = [NSString stringWithFormat:@"%.1f",max/5 * (i -5)];
+        }else{
+            label1.text = [NSString stringWithFormat:@"%.1f",max/5 * (i-5)];
         }
         label1.textAlignment = NSTextAlignmentRight;
         label1.font = [UIFont systemFontOfSize:9];
@@ -131,12 +133,12 @@
     }
     
     //循环创建柱状图
-    for (int i = 0; i<1; i++) {
+    for (int i = 0; i<_valueOneArray.count; i++) {
         UIBezierPath *Polyline = [UIBezierPath bezierPath];
         //设置起点
         [Polyline moveToPoint:CGPointMake(80 + i * averageWidth , rect.size.height-5*rect.size.height/12-30)];
         //设置终点
-        [Polyline addLineToPoint:CGPointMake(80 + i * averageWidth ,rect.size.height-5*rect.size.height/12-30+[[_valueArray objectAtIndex:i] floatValue]*value)];
+        [Polyline addLineToPoint:CGPointMake(80 + i * averageWidth ,rect.size.height-5*rect.size.height/12-30+[[_valueOneArray objectAtIndex:i] floatValue]*value)];
         //设置颜色
         [[UIColor clearColor] set];
         //设置宽度

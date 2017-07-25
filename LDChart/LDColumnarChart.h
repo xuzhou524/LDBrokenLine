@@ -10,5 +10,6 @@
 
 @interface LDColumnarChart : UIView
 @property (nonatomic,strong) NSArray *valueArray;
+@property (nonatomic,strong) NSArray *valueOneArray;
 @property (nonatomic, strong) NSArray *monthArray;
 @end
