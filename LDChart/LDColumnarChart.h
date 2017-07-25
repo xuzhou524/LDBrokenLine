@@ -12,4 +12,8 @@
 @property (nonatomic,strong) NSArray *valueArray;
 @property (nonatomic,strong) NSArray *valueOneArray;
 @property (nonatomic, strong) NSArray *monthArray;
+/**
+ 滑动线颜色
+ */
+@property(nonatomic,strong)UIColor* lineColor;
 @end

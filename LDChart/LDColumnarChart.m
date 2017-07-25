@@ -7,17 +7,64 @@
 //
 
 #import "LDColumnarChart.h"
+#import "LDChartControlLine.h"
 
 #define XWSCREENW [UIScreen mainScreen].bounds.size.width
+
+@interface LDColumnarChart()
+@property(nonatomic,strong)LDChartControlLine * controlLine;
+@end
+
 @implementation LDColumnarChart{
-    
     CGFloat titleHeight;
-    
 }
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
+
+-(void)pan:(UIPanGestureRecognizer *)recognizer{
+    
+    CGPoint translation = [recognizer translationInView:self.controlLine];
+    NSLog(@"%f , %f , %f , %f",recognizer.view.center.x,translation.x,recognizer.view.center.x + translation.x,([self chartWidth]+33 - 70)/(_monthArray.count - 1));
+    if ((recognizer.view.center.x + translation.x) < 70 || (recognizer.view.center.x + translation.x) > [self chartWidth]+40) {
+        return;
+    }
+    recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x,recognizer.view.center.y );
+    [recognizer setTranslation:CGPointZero inView:self.controlLine];
+    
+    if (translation.x > 0) {
+        NSInteger translationX = recognizer.view.center.x + translation.x - 44;
+        NSInteger index = translationX / (([self chartWidth]+33 - 70)/(_monthArray.count - 1));
+        if (index < _monthArray.count) {
+            NSLog(@"%ld , %@",(long)index,_monthArray[index]);
+            self.controlLine.monthLabel.text = _monthArray[index];
+        }
+    }
+    else if (translation.x < 0) {
+        NSInteger translationX = recognizer.view.center.x - 44;
+        NSInteger index = translationX /  (([self chartWidth]+33 - 70)/(_monthArray.count - 1));
+        if (index < _monthArray.count) {
+            NSLog(@"%ld , %@",(long)index,_monthArray[index]);
+            self.controlLine.monthLabel.text = _monthArray[index];
+        }
+    }
+}
+
 
 - (void)drawRect:(CGRect)rect {
+    
+    if(!self.controlLine){
+        self.controlLine = [LDChartControlLine new];
+        self.controlLine.frame = CGRectMake([self chartWidth]+33, 10, 14, [self chartHeight] + 23);
+        self.controlLine.userInteractionEnabled = YES;
+        self.controlLine.backgroundColor = [UIColor clearColor];
+        self.controlLine.dotGlowLayer.backgroundColor = _lineColor.CGColor;
+        [self.controlLine.lineLayer setStrokeColor:_lineColor.CGColor];
+        [self addSubview:self.controlLine];
+        
+        UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(pan:)];
+        [self.controlLine addGestureRecognizer:panGR];
+        
+        //默认显示最后一条
+        self.controlLine.monthLabel.text = _monthArray.lastObject;
+    }
     
     //获取数据最大值
     float max = [[_valueArray valueForKeyPath:@"@max.floatValue"] floatValue];
@@ -53,7 +100,7 @@
         [self addSubview:label1];
     }
     //计算坐标比例
-    float value = (rect.size.height-5*rect.size.height/12-30-(rect.size.height/24))/max;
+    float value = (rect.size.height-5*rect.size.height/12-30-(rect.size.height/24))/max ;
     
     if(self.monthArray.count <= 1) return;
     float height = [self chartHeight];
@@ -73,15 +120,14 @@
                    NSFontAttributeName: [UIFont systemFontOfSize:9],
                    NSParagraphStyleAttributeName: style
                    };
-    
     for (int i = 0; i < self.monthArray.count; i++) {
         [self.monthArray[i] drawInRect:CGRectMake(78 + i * averageWidth - averageWidth/2, height + 50, averageWidth, 10) withAttributes:attributes];
         //柱状图值
-        UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(78 + i * averageWidth - averageWidth/2, rect.size.height-5*rect.size.height/12-30-12-[[_valueArray objectAtIndex:i] floatValue]*value, averageWidth, 10)];
-        label.text = [NSString stringWithFormat:@"%@",[_valueArray objectAtIndex:i]];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont systemFontOfSize:10];
-        [self addSubview:label];
+//        UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(78 + i * averageWidth - averageWidth/2, rect.size.height-5*rect.size.height/12-30-12-[[_valueArray objectAtIndex:i] floatValue]*value, averageWidth, 10)];
+//        label.text = [NSString stringWithFormat:@"%@",[_valueArray objectAtIndex:i]];
+//        label.textAlignment = NSTextAlignmentCenter;
+//        label.font = [UIFont systemFontOfSize:10];
+//        [self addSubview:label];
     }
     
     //循环创建柱状图

@@ -46,6 +46,7 @@
     columnarView.valueArray = @[@2000,@1000, @4000, @600,@9000, @800];
     columnarView.valueOneArray = @[@200,@1000, @400, @600,@5000, @800];
     columnarView.monthArray =@[@"2016-10",@"11",@"12",@"2017-01",@"02",@"03"];
+    columnarView.lineColor  = [UIColor colorWithRed:246/255.0 green:80/255.0 blue:100/255.0 alpha:1.0];
     columnarView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:columnarView];
     

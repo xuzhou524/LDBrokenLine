@@ -161,27 +161,6 @@
             self.controlLine.monthLabel.text = _XLabels[index];
         }
     }
-    
-    
-   
-    
-    //if (recognizer.state == UIGestureRecognizerStateEnded) {
-    
-    //    CGPoint velocity = [recognizer velocityInView:self.controlLine];
-    //    CGFloat magnitude = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
-    //    CGFloat slideMult = magnitude / 200;
-    //    NSLog(@"magnitude: %f, slideMult: %f", magnitude, slideMult);
-        
-    //    float slideFactor = 0.1 * slideMult; // Increase for more of a slide
-    //    CGPoint finalPoint = CGPointMake(recognizer.view.center.x + (velocity.x * slideFactor),recognizer.view.center.y + (velocity.y * slideFactor));
-    //    finalPoint.x = MIN(MAX(finalPoint.x, 0), self.controlLine.bounds.size.width);
-    //    finalPoint.y = MIN(MAX(finalPoint.y, 0), self.controlLine.bounds.size.height);
-        
-    //    [UIView animateWithDuration:slideFactor*2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-    //        recognizer.view.center = finalPoint;
-    //    } completion:nil];
-   // }
-    
 }
 
 

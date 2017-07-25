@@ -14,18 +14,14 @@
  渐变开始颜色
  */
 @property(nonatomic,strong)UIColor* gradientStartColor;
-
 /**
  渐变结束颜色
  */
 @property(nonatomic,strong)UIColor* gradientEndColor;
-
 /**
  滑动线颜色
  */
 @property(nonatomic,strong)UIColor* lineColor;
-
-
 /**
  数据
  */
