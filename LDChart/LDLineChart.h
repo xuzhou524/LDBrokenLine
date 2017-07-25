@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LDLineChart : UIView
+@interface LDLineChart : UIView<UIGestureRecognizerDelegate>
 
 /**
  渐变开始颜色
@@ -19,6 +19,11 @@
  渐变结束颜色
  */
 @property(nonatomic,strong)UIColor* gradientEndColor;
+
+/**
+ 滑动线颜色
+ */
+@property(nonatomic,strong)UIColor* lineColor;
 
 
 /**

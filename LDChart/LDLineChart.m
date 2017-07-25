@@ -7,6 +7,7 @@
 //
 
 #import "LDLineChart.h"
+#import "LDChartControlLine.h"
 
 //渐变背景色所占整个控件高度的比例，剩下的就是空白
 #define gradientRatio 0.916
@@ -14,6 +15,7 @@
 
 
 @interface LDLineChart()
+@property(nonatomic,strong)LDChartControlLine * controlLine;
 @property(nonatomic,strong)CAGradientLayer * chartBackgroundLayer;
 @property(nonatomic,strong)CAShapeLayer * chartLineLayer;
 
@@ -115,6 +117,71 @@
     if(!self.chartLineLayer){
         [self drawChartLine];
     }
+    
+    if(!self.controlLine){
+        self.controlLine = [LDChartControlLine new];
+        self.controlLine.frame = CGRectMake([self chartWidth] + 70 - 15/2.0, 20, 14, [self chartHeight] + 4);
+        self.controlLine.userInteractionEnabled = YES;
+        //self.controlLine.backgroundColor = [UIColor whiteColor];
+        self.controlLine.dotGlowLayer.backgroundColor = _lineColor.CGColor;
+        [self.controlLine.lineLayer setStrokeColor:_lineColor.CGColor];
+        [self addSubview:self.controlLine];
+
+        UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(pan:)];
+        [self.controlLine addGestureRecognizer:panGR];
+        
+        //默认显示最后一条
+        self.controlLine.monthLabel.text = _XLabels.lastObject;
+    }
+}
+
+-(void)pan:(UIPanGestureRecognizer *)recognizer{
+    
+    CGPoint translation = [recognizer translationInView:self.controlLine];
+    NSLog(@"%f , %f , %f , %f",recognizer.view.center.x,translation.x,recognizer.view.center.x + translation.x,[self chartWidth]/(_XLabels.count - 1));
+    if ((recognizer.view.center.x + translation.x) < 70 || (recognizer.view.center.x + translation.x) > [self chartWidth] + 70) {
+        return;
+    }
+    recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x,recognizer.view.center.y );
+    [recognizer setTranslation:CGPointZero inView:self.controlLine];
+    
+    if (translation.x > 0) {
+        NSInteger translationX = recognizer.view.center.x + translation.x - 70;
+        NSInteger index = translationX / ([self chartWidth]/(_XLabels.count - 1));
+        if (index < _XLabels.count) {
+            NSLog(@"%ld , %@",(long)index,_XLabels[index]);
+            self.controlLine.monthLabel.text = _XLabels[index];
+        }
+    }
+    else if (translation.x < 0) {
+        NSInteger translationX = recognizer.view.center.x - 70;
+        NSInteger index = translationX /  ([self chartWidth]/(_XLabels.count - 1));
+        if (index < _XLabels.count) {
+            NSLog(@"%ld , %@",(long)index,_XLabels[index]);
+            self.controlLine.monthLabel.text = _XLabels[index];
+        }
+    }
+    
+    
+   
+    
+    //if (recognizer.state == UIGestureRecognizerStateEnded) {
+    
+    //    CGPoint velocity = [recognizer velocityInView:self.controlLine];
+    //    CGFloat magnitude = sqrtf((velocity.x * velocity.x) + (velocity.y * velocity.y));
+    //    CGFloat slideMult = magnitude / 200;
+    //    NSLog(@"magnitude: %f, slideMult: %f", magnitude, slideMult);
+        
+    //    float slideFactor = 0.1 * slideMult; // Increase for more of a slide
+    //    CGPoint finalPoint = CGPointMake(recognizer.view.center.x + (velocity.x * slideFactor),recognizer.view.center.y + (velocity.y * slideFactor));
+    //    finalPoint.x = MIN(MAX(finalPoint.x, 0), self.controlLine.bounds.size.width);
+    //    finalPoint.y = MIN(MAX(finalPoint.y, 0), self.controlLine.bounds.size.height);
+        
+    //    [UIView animateWithDuration:slideFactor*2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    //        recognizer.view.center = finalPoint;
+    //    } completion:nil];
+   // }
+    
 }
 
 
