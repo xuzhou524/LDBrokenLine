@@ -19,56 +19,12 @@
     CGFloat titleHeight;
 }
 
--(void)pan:(UIPanGestureRecognizer *)recognizer{
-    
-    CGPoint translation = [recognizer translationInView:self.controlLine];
-    NSLog(@"%f , %f , %f , %f",recognizer.view.center.x,translation.x,recognizer.view.center.x + translation.x,([self chartWidth]+33 - 70)/(_monthArray.count - 1));
-    if ((recognizer.view.center.x + translation.x) < 70 || (recognizer.view.center.x + translation.x) > [self chartWidth]+40) {
-        return;
-    }
-    recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x,recognizer.view.center.y );
-    [recognizer setTranslation:CGPointZero inView:self.controlLine];
-    
-    if (translation.x > 0) {
-        NSInteger translationX = recognizer.view.center.x + translation.x - 44;
-        NSInteger index = translationX / (([self chartWidth]+33 - 70)/(_monthArray.count - 1));
-        if (index < _monthArray.count) {
-            NSLog(@"%ld , %@",(long)index,_monthArray[index]);
-            self.controlLine.monthLabel.text = _monthArray[index];
-        }
-    }
-    else if (translation.x < 0) {
-        NSInteger translationX = recognizer.view.center.x - 44;
-        NSInteger index = translationX /  (([self chartWidth]+33 - 70)/(_monthArray.count - 1));
-        if (index < _monthArray.count) {
-            NSLog(@"%ld , %@",(long)index,_monthArray[index]);
-            self.controlLine.monthLabel.text = _monthArray[index];
-        }
-    }
-}
-
-
 - (void)drawRect:(CGRect)rect {
     
-    if(!self.controlLine){
-        self.controlLine = [LDChartControlLine new];
-        self.controlLine.frame = CGRectMake([self chartWidth]+33, 10, 14, [self chartHeight] + 23);
-        self.controlLine.userInteractionEnabled = YES;
-        self.controlLine.backgroundColor = [UIColor clearColor];
-        self.controlLine.dotGlowLayer.backgroundColor = _lineColor.CGColor;
-        [self.controlLine.lineLayer setStrokeColor:_lineColor.CGColor];
-        [self addSubview:self.controlLine];
-        
-        UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(pan:)];
-        [self.controlLine addGestureRecognizer:panGR];
-        
-        //默认显示最后一条
-        self.controlLine.monthLabel.text = _monthArray.lastObject;
-    }
+    [self slidingControlLine];
     
     //获取数据最大值
     float max = [[_valueArray valueForKeyPath:@"@max.floatValue"] floatValue];
-    
     //画x轴
     for (int i = 0; i< 11 ; i++) {
         UIBezierPath *Polyline = [UIBezierPath bezierPath];
@@ -224,7 +180,52 @@
         //结束动画
         [CATransaction commit];
     }
+}
+
+-(void)slidingControlLine{
+    if(!self.controlLine){
+        self.controlLine = [LDChartControlLine new];
+        self.controlLine.frame = CGRectMake([self chartWidth]+33, 10, 14, [self chartHeight] + 23);
+        self.controlLine.userInteractionEnabled = YES;
+        self.controlLine.backgroundColor = [UIColor clearColor];
+        self.controlLine.dotGlowLayer.backgroundColor = _lineColor.CGColor;
+        [self.controlLine.lineLayer setStrokeColor:_lineColor.CGColor];
+        [self addSubview:self.controlLine];
+        
+        UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(pan:)];
+        [self.controlLine addGestureRecognizer:panGR];
+        
+        //默认显示最后一条
+        self.controlLine.monthLabel.text = _monthArray.lastObject;
+    }
+}
+
+-(void)pan:(UIPanGestureRecognizer *)recognizer{
     
+    CGPoint translation = [recognizer translationInView:self.controlLine];
+    NSLog(@"%f , %f , %f , %f",recognizer.view.center.x,translation.x,recognizer.view.center.x + translation.x,([self chartWidth]+33 - 70)/(_monthArray.count - 1));
+    if ((recognizer.view.center.x + translation.x) < 70 || (recognizer.view.center.x + translation.x) > [self chartWidth]+40) {
+        return;
+    }
+    recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x,recognizer.view.center.y );
+    [recognizer setTranslation:CGPointZero inView:self.controlLine];
+    
+    if (translation.x > 0) {
+        NSInteger translationX = recognizer.view.center.x + translation.x - 44;
+        NSInteger index = translationX / (([self chartWidth]+33 - 70)/(_monthArray.count - 1));
+        if (index < _monthArray.count) {
+            NSLog(@"%ld , %@",(long)index,_monthArray[index]);
+            self.controlLine.monthLabel.text = _monthArray[index];
+        }
+    }
+    else if (translation.x < 0) {
+        NSInteger translationX = recognizer.view.center.x - 44;
+        NSInteger index = translationX /  (([self chartWidth]+33 - 70)/(_monthArray.count - 1));
+        if (index < _monthArray.count) {
+            NSLog(@"%ld , %@",(long)index,_monthArray[index]);
+            self.controlLine.monthLabel.text = _monthArray[index];
+        }
+    }
 }
 
 - (CGFloat)chartWidth{
