@@ -31,7 +31,7 @@
         //设置起点
         [Polyline moveToPoint:CGPointMake(70, rect.size.height-i*rect.size.height/12-30)];
         //设置终点
-        [Polyline addLineToPoint:CGPointMake(self.bounds.size.width -30,rect.size.height-i*rect.size.height/12-30)];
+        [Polyline addLineToPoint:CGPointMake(self.bounds.size.width -35,rect.size.height-i*rect.size.height/12-30)];
         //设置颜色
         [[UIColor redColor] set];
         //设置宽度
@@ -56,7 +56,7 @@
         [self addSubview:label1];
     }
     //计算坐标比例
-    float value = (rect.size.height-5*rect.size.height/12-30-(rect.size.height/24))/max ;
+    float value = (rect.size.height-5*rect.size.height/12-35-(rect.size.height/24))/max ;
     
     if(self.monthArray.count <= 1) return;
     float height = [self chartHeight];
@@ -229,7 +229,7 @@
 }
 
 - (CGFloat)chartWidth{
-    return self.bounds.size.width - 70 ;
+    return self.bounds.size.width - 70 -5;
 }
 - (CGFloat)chartHeight{
     return self.bounds.size.height - 20 - 20 - self.bounds.size.height * (1 - 0.916);
