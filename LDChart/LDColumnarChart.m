@@ -102,12 +102,7 @@
         //添加CAShapeLayer
         CAShapeLayer *shapeLine = [[CAShapeLayer alloc]init];
         //设置颜色
-        //if (i == _valueArray.count-1) {
-        //    shapeLine.strokeColor = [UIColor colorWithRed:246/255.0 green:80/255.0 blue:100/255.0 alpha:0.8].CGColor;
-        //}else{
-            shapeLine.strokeColor = [UIColor colorWithRed:70/255.0 green:90/255.0 blue:200/255.0 alpha:0.8].CGColor;
-        //}
-
+        shapeLine.strokeColor = [UIColor colorWithRed:70/255.0 green:90/255.0 blue:200/255.0 alpha:0.8].CGColor;
         //设置宽度
         shapeLine.lineWidth = 20.0;
         //把CAShapeLayer添加到当前视图CAShapeLayer
@@ -150,11 +145,7 @@
         //添加CAShapeLayer
         CAShapeLayer *shapeLine = [[CAShapeLayer alloc]init];
         //设置颜色
-        //if (i == _valueArray.count-1) {
-            shapeLine.strokeColor = [UIColor colorWithRed:246/255.0 green:80/255.0 blue:100/255.0 alpha:0.8].CGColor;
-        //}else{
-        //    shapeLine.strokeColor = [UIColor colorWithRed:70/255.0 green:90/255.0 blue:200/255.0 alpha:0.8].CGColor;
-        //}
+        shapeLine.strokeColor = [UIColor colorWithRed:246/255.0 green:80/255.0 blue:100/255.0 alpha:0.8].CGColor;
         //设置宽度
         shapeLine.lineWidth = 20.0;
         //把CAShapeLayer添加到当前视图CAShapeLayer

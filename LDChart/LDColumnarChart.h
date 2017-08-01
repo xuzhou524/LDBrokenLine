@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LDColumnarChart : UIView
+@interface LDColumnarChart : UIView<UIGestureRecognizerDelegate>
 @property (nonatomic,strong) NSArray *valueArray;
 @property (nonatomic,strong) NSArray *valueOneArray;
 @property (nonatomic, strong) NSArray *monthArray;
