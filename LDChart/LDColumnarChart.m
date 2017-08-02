@@ -56,7 +56,7 @@
         [self addSubview:label1];
     }
     //计算坐标比例
-    float value = (rect.size.height-5*rect.size.height/12-35-(rect.size.height/24))/max ;
+    float value = (rect.size.height-5*rect.size.height/12-30-(rect.size.height/24))/max ;
     
     if(self.monthArray.count <= 1) return;
     float height = [self chartHeight];
