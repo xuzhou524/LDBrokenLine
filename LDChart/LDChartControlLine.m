@@ -24,6 +24,8 @@
         //self.triangleLayer = [CAShapeLayer new];
         self.monthLabel = [UILabel new];
         self.dotLayer = [CAShapeLayer new];
+        self.radialdotGlowLayer = [CAShapeLayer new];
+        [self.layer addSublayer:self.radialdotGlowLayer];
         [self.layer addSublayer:self.lineLayer];
         [self.layer addSublayer:self.dotGlowLayer];
         [self.layer addSublayer:self.dotLayer];
@@ -37,6 +39,8 @@
     [super layoutSubviews];
     self.lineLayer.frame = self.bounds;
     self.dotLayer.frame = self.bounds;
+    self.radialdotGlowLayer.frame = self.bounds;
+
     
     CGFloat width = self.bounds.size.width;
     CGFloat height = self.bounds.size.height;
@@ -47,11 +51,24 @@
     //[self.lineLayer setStrokeColor:[UIColor colorWithRed:246/255.0 green:49/255.0 blue:71/255.0 alpha:1.0].CGColor];
     [self.lineLayer setLineWidth:lineWidth];
 
+    
+    UIBezierPath * radialPath = [UIBezierPath bezierPath];
+    [radialPath moveToPoint:CGPointMake(lineX, 0)];
+    [radialPath addLineToPoint:CGPointMake(lineX, height)];
+    [self.radialdotGlowLayer setPath:radialPath.CGPath];
+    CGFloat radialDotDiameter  = 12;
+    CGFloat radialDotX = (width - radialDotDiameter - lineWidth) / 2;
+    CGFloat radialDotY = height - radialDotDiameter + 3;
+    CGRect radialFrame = CGRectMake(radialDotX, radialDotY, radialDotDiameter, radialDotDiameter);
+    radialPath = [UIBezierPath bezierPathWithOvalInRect:radialFrame];
+    self.radialdotGlowLayer.path = radialPath.CGPath;
+    [self.radialdotGlowLayer setFillColor:self.lineLayer.strokeColor];
+    self.radialdotGlowLayer.opacity = 0.5;
+    
     UIBezierPath * path = [UIBezierPath bezierPath];
     [path moveToPoint:CGPointMake(lineX, 0)];
     [path addLineToPoint:CGPointMake(lineX, height)];
     [self.lineLayer setPath:path.CGPath];
-    
     CGFloat dotDiameter  = 6;
     CGFloat dotX = (width - dotDiameter - lineWidth) / 2;
     CGFloat dotY = height - dotDiameter;

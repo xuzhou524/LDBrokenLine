@@ -13,6 +13,7 @@
 @interface LDChartControlLine : UIView
 @property(nonatomic,strong)CAShapeLayer * lineLayer;
 @property(nonatomic,strong)CAShapeLayer * dotLayer;
+@property(nonatomic,strong)CAShapeLayer * radialdotGlowLayer;
 @property(nonatomic,strong)LDRadialGradientLayer * dotGlowLayer;
 @property(nonatomic,strong)CAShapeLayer * triangleLayer;
 
